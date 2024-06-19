@@ -71,7 +71,7 @@ jobs:
          server_address: smtp.gmail.com
          server_port: 465
          secure: true
-         subject: "New Docker Image Version for Deployment 1"
+         subject: "New Docker Image release"
          to: "dewcapontaareh@gmail.com"
          from: "Admin_DevOps"
          body: "New image build version: ${{ env.APP_VERSION }}"

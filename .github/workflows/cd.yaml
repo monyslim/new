@@ -10,7 +10,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Stop the container and remove it
+      - name: Stop the container
         run: docker stop test-calc || true
 
       - name: Remove the container test-calc

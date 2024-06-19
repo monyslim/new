@@ -74,4 +74,4 @@ jobs:
          subject: "New Docker Image release"
          to: "dewcapontaareh@gmail.com"
          from: "Admin_DevOps"
-         body: "New image build version: ${{ env.APP_VERSION }}"
+         body: "New image release"

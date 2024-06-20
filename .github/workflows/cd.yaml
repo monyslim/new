@@ -50,4 +50,4 @@ jobs:
            subject: "New Docker Container release"
            to: "dewcapontaareh@gmail.com"
            from: "Admin_DevOps"
-           body: "New Docker Container release"
+           body: "New Docker Container startup"

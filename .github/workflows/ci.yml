@@ -53,7 +53,7 @@ jobs:
         if: success()
         uses: slackapi/slack-github-action@v1.26.0
         with:
-          channel-id: 'C078VD8T2NN'  # Replace with your channel ID
+          channel-id: 'C079C6D3GDR'  # Replace with your channel ID
           slack-message: "GitHub build succeeded! 🎉\n[Build URL](${{ github.event.head_commit.url }})"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
@@ -62,7 +62,7 @@ jobs:
         if: failure()
         uses: slackapi/slack-github-action@v1.26.0
         with:
-          channel-id: 'C078VD8T2NN'  # Replace with your channel ID
+          channel-id: 'C079C6D3GDR'  # Replace with your channel ID
           slack-message: "GitHub build failed. 😞\n[Build URL](${{ github.event.head_commit.url }})"
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

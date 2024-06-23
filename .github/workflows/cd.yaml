@@ -24,7 +24,7 @@ jobs:
           IMAGE_NAME: test-image
           USERNAME: monyslim
         run: |
-           docker run -d -p 3004:3000 --name test-calc ${{ env.USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.APP_VERSION }}
+           docker run -d -p 3004:3000 --name test-calc $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
 
       # - name: Send Slack message for deployment success
       #   if: success()

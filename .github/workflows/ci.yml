@@ -43,7 +43,7 @@ jobs:
           IMAGE_NAME: test-image
           USERNAME: monyslim
         run: |
-          docker push $USERNAME/$IMAGE_NAME:$VERSION
+          docker push $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
 
   # notify:
   #   runs-on: ubuntu-latest

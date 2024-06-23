@@ -19,7 +19,7 @@ jobs:
       - name: Get the code from Docker Hub
         run: docker pull monyslim/test-image
 
-      - name: Run the image as a container
+      - name: Run the image as an app
         env:
           IMAGE_NAME: test-image
           USERNAME: monyslim

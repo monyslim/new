@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: List files before artifact download
-        run: ls -l /home/monyslim/actions-runner/_work/new/new/path/to/artifacts
+        run: ls -l ${{ github.workspace }}
 
       - name: Download APP_VERSION artifact
         uses: actions/download-artifact@v2

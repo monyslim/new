@@ -10,20 +10,20 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Download APP_VERSION artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: app-version
-          path: .
+    #   - name: Download APP_VERSION artifact
+    #     uses: actions/download-artifact@v2
+    #     with:
+    #       name: app-version
+    #       path: .
 
-      - name: Debug - List files in the current directory
-        run: ls -l
+    #   - name: Debug - List files in the current directory
+    #     run: ls -l
 
-      - name: Read APP_VERSION
-        id: read_app_version
-        run: |
-            echo "APP_VERSION=$(cat app_version.txt)" >> $GITHUB_ENV
-            echo ${{ env.APP_VERSION }}
+    #   - name: Read APP_VERSION
+    #     id: read_app_version
+    #     run: |
+    #         echo "APP_VERSION=$(cat app_version.txt)" >> $GITHUB_ENV
+    #         echo ${{ env.APP_VERSION }}
 
       - name: Stop the containers
         run: docker stop test-calc || true
@@ -32,17 +32,11 @@ jobs:
         run: docker rm test-calc || true
 
       - name: Get the code from Docker Hub
-        env:
-          IMAGE_NAME: test-image
-          USERNAME: monyslim
-        run: docker pull $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
+        run: docker pull monyslim/test-image:1
 
       - name: Run the image as an app-version
-        env:
-          IMAGE_NAME: test-image
-          USERNAME: monyslim
         run: |
-           docker run -d -p 3004:3000 --name test-calc $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
+           docker run -d -p 3004:3000 --name test-calc monyslim/test-image:1
 
       - name: Send email notification for the latest version of the deployment
         uses: dawidd6/action-send-mail@v3

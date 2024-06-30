@@ -44,16 +44,3 @@ jobs:
           USERNAME: monyslim
         run: |
           docker run -d -p 3004:3000 --name test-calc $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
-
-      - name: Send email notification for the latest version of the deployment
-        uses: dawidd6/action-send-mail@v3
-        with:
-          username: prcenturionboy@gmail.com
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          subject: "New Docker Container release"
-          to: "dewcapontaareh@gmail.com"
-          from: "Admin_DevOps"
-          body: "New Docker Container startup version: ${{ env.APP_VERSION }}"

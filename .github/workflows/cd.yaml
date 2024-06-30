@@ -32,7 +32,7 @@ jobs:
           USERNAME: monyslim
         run: docker pull $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
 
-      - name: Run the image as an app
+      - name: Run the image as an app-version
         env:
           IMAGE_NAME: test-image
           USERNAME: monyslim

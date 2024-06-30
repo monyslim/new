@@ -10,14 +10,14 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: List repository contents
+        run: ls -l ${{ github.workspace }}
+
       - name: Download APP_VERSION artifact
         uses: actions/download-artifact@v2
         with:
           name: app-version
           path: .
-
-      - name: Debug - List files in the current directory
-        run: ls -l
 
       - name: Read APP_VERSION
         id: read_app_version

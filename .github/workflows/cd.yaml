@@ -10,6 +10,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Download APP_VERSION artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-version
+          path: .
+
+      - name: Read APP_VERSION
+        id: read_app_version
+        run: echo "APP_VERSION=$(cat app_version.txt)" >> $GITHUB_ENV
+
       - name: Stop the containers
         run: docker stop test-calc || true
 
@@ -29,24 +39,7 @@ jobs:
         run: |
            docker run -d -p 3004:3000 --name test-calc $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
 
-      - name: Send Slack message for deployment success
-        if: success()
-        uses: slackapi/slack-github-action@v1.26.0
-        with:
-          channel-id: 'C079C6D3GDR'  # Replace with your channel ID
-          slack-message: "Deployment succeeded! 🎉\n[Commit URL](${{ github.event.workflow_run.head_commit.url }})"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
-      - name: Send Slack message for deployment failure
-        if: failure()
-        uses: slackapi/slack-github-action@v1.26.0
-        with:
-          channel-id: 'C079C6D3GDR'  # Replace with your channel ID
-          slack-message: "Deployment failed. 😞\n[Commit URL](${{ github.event.workflow_run.head_commit.url }})"
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      - name: "Send email notification for the latest version of the deployment"
+      - name: Send email notification for the latest version of the deployment
         uses: dawidd6/action-send-mail@v3
         with:
            username: prcenturionboy@gmail.com
@@ -57,4 +50,4 @@ jobs:
            subject: "New Docker Container release"
            to: "dewcapontaareh@gmail.com"
            from: "Admin_DevOps"
-           body: "New Docker Container startup"
+           body: "New Docker Container startup version: ${{ env.APP_VERSION }}"

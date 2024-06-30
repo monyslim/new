@@ -16,6 +16,9 @@ jobs:
 
       - name: Save APP_VERSION to a file
         run: echo ${{ env.APP_VERSION }} > app_version.txt
+      
+      - name: Debug - Check app_version.txt
+        run: cat app_version.txt
 
       - name: Upload APP_VERSION artifact
         uses: actions/upload-artifact@v2

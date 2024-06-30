@@ -14,11 +14,16 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: app-version
-          path: app_version.txt
+          path: .
+
+      - name: Debug - List files in the current directory
+        run: ls -l
 
       - name: Read APP_VERSION
         id: read_app_version
-        run: echo "APP_VERSION=$(cat app_version.txt)" >> $GITHUB_ENV
+        run: |
+            echo "APP_VERSION=$(cat app_version.txt)" >> $GITHUB_ENV
+            echo ${{ env.APP_VERSION }}
 
       - name: Stop the containers
         run: docker stop test-calc || true

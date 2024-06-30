@@ -14,7 +14,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: app-version
-          path: .
+          path: app_version.txt
 
       - name: Read APP_VERSION
         id: read_app_version

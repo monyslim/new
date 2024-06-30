@@ -8,17 +8,17 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: List repository contents
-        run: ls -l ls -l /home/monyslim/actions-runner/_work/new/new/path/to/artifacts
+      - name: List files before artifact download
+        run: ls -l /home/monyslim/actions-runner/_work/new/new/path/to/artifacts
 
       - name: Download APP_VERSION artifact
         uses: actions/download-artifact@v2
         with:
           name: app-version
-          path: /home/monyslim/actions-runner/_work/new/new/path/to/artifacts  # Replace with your actual artifact path
+          path: /home/monyslim/actions-runner/_work/new/new/path/to/artifacts
 
       - name: Debug - List files after artifact download
         run: ls -l

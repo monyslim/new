@@ -10,20 +10,21 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    #   - name: Download APP_VERSION artifact
-    #     uses: actions/download-artifact@v2
-    #     with:
-    #       name: app-version
-    #       path: .
+      - name: Download APP_VERSION artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-version
+          path: .
 
-    #   - name: Debug - List files in the current directory
-    #     run: ls -l
+      - name: Debug - List files in the current directory
+        run: ls -l
 
-    #   - name: Read APP_VERSION
-    #     id: read_app_version
-    #     run: |
-    #         echo "APP_VERSION=$(cat app_version.txt)" >> $GITHUB_ENV
-    #         echo ${{ env.APP_VERSION }}
+      - name: Read APP_VERSION
+        id: read_app_version
+        run: |
+          APP_VERSION=$(cat app_version.txt)
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+          echo "APP_VERSION=$APP_VERSION"
 
       - name: Stop the containers
         run: docker stop test-calc || true
@@ -32,21 +33,27 @@ jobs:
         run: docker rm test-calc || true
 
       - name: Get the code from Docker Hub
-        run: docker pull monyslim/test-image:1
+        env:
+          IMAGE_NAME: test-image
+          USERNAME: monyslim
+        run: docker pull $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
 
-      - name: Run the image as an app-version
+      - name: Run the image as an app
+        env:
+          IMAGE_NAME: test-image
+          USERNAME: monyslim
         run: |
-           docker run -d -p 3004:3000 --name test-calc monyslim/test-image:1
+          docker run -d -p 3004:3000 --name test-calc $USERNAME/$IMAGE_NAME:${{ env.APP_VERSION }}
 
       - name: Send email notification for the latest version of the deployment
         uses: dawidd6/action-send-mail@v3
         with:
-           username: prcenturionboy@gmail.com
-           password: ${{ secrets.EMAIL_PASSWORD }}
-           server_address: smtp.gmail.com
-           server_port: 465
-           secure: true
-           subject: "New Docker Container release"
-           to: "dewcapontaareh@gmail.com"
-           from: "Admin_DevOps"
-           body: "New Docker Container startup version: ${{ env.APP_VERSION }}"
+          username: prcenturionboy@gmail.com
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          subject: "New Docker Container release"
+          to: "dewcapontaareh@gmail.com"
+          from: "Admin_DevOps"
+          body: "New Docker Container startup version: ${{ env.APP_VERSION }}"

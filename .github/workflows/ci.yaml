@@ -52,10 +52,3 @@ jobs:
             
       - name: "run the image as a container"
         run: docker run -d -p 3004:3000 --name test-calc monyslim/apper-image:2
-  run-on-master:
-    if: ${{ github.ref_name == 'master' }}
-    runs-on: self-hosted
-    steps:
-      - name: Print greeting
-        run: |
-          echo "Runs on master now!!"

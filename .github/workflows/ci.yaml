@@ -10,7 +10,7 @@ on:
 jobs:
   run-the-image:
     if: ${{ github.ref_name == 'second-branch' }}
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Print greeting
         run: |
@@ -40,3 +40,15 @@ jobs:
             USERNAME: monyslim
         run: |
             docker push $USERNAME/$IMAGE_NAME:$VERSION
+            
+      - name: "stop the container"
+        run: "docker stop test-calc || true"
+            
+      - name: "Remove the container test-calc"
+        run: docker rm test-calc || true
+            
+      - name: "get the code from Docker Hub"
+        run: docker pull monyslim/apper-image:2
+            
+      - name: "run the image as a container"
+        run: docker run -d -p 3004:3000 --name test-calc monyslim/apper-image:2

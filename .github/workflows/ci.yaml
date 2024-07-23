@@ -28,27 +28,13 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build Docker image
-        env:
-          IMAGE_NAME: apper-image
-          VERSION: 2
-          USERNAME: monyslim
-        run: docker build -t $USERNAME/$IMAGE_NAME:$VERSION .
-      - name: push the image
-        env:
-            IMAGE_NAME: apper-image
-            VERSION: 2
-            USERNAME: monyslim
         run: |
-            docker push $USERNAME/$IMAGE_NAME:$VERSION
-            
-      - name: "stop the container"
-        run: "docker stop test-calc || true"
-            
-      - name: "Remove the container test-calc"
-        run: docker rm test-calc || true
-            
-      - name: "get the code from Docker Hub"
-        run: docker pull monyslim/apper-image:2
-            
-      - name: "run the image as a container"
-        run: docker run -d -p 3004:3000 --name test-calc monyslim/apper-image:2
+            if [ "${GITHUB_REF##*/}" == "second-branch" ]; then
+              echo "Building Docker image on second-branch"
+              docker build -t monyslim/apper-image:2 .
+              docker push monyslim/apper-image:2
+            elif [ "${GITHUB_REF##*/}" == "master" ]; then
+              echo "Building Docker image on master"
+              docker build -t monyslim/apper-image:1 .
+              docker push monyslim/apper-image:1
+            fi

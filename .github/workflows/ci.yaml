@@ -5,21 +5,24 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
+      - master
       - second-branch
 
 jobs:
   run-the-image:
-    if: ${{ github.ref_name == 'second-branch' }}
+    if: ${{ github.ref_name == 'master' || github.ref_name == 'second-branch' }}
     runs-on: self-hosted
     steps:
       - name: Print greeting
         run: |
-          echo "Runs on second-branch!!"
+          echo "Runs on ${{ github.ref_name }}!!"
+          
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Print greeting
-        run: echo "Building Docker image on second-branch!!"
+        run: |
+          echo "Building Docker image on ${{ github.ref_name }}!!"
 
       - name: Log into Docker Hub
         uses: docker/login-action@v3
@@ -28,13 +31,28 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Build Docker image
+        env:
+          IMAGE_NAME: apper-image
+          VERSION: ${{ github.ref_name == 'master' && '1' || '2' }}
+          USERNAME: monyslim
+        run: docker build -t $USERNAME/$IMAGE_NAME:$VERSION .
+
+      - name: Push the image
+        env:
+          IMAGE_NAME: apper-image
+          VERSION: ${{ github.ref_name == 'master' && '1' || '2' }}
+          USERNAME: monyslim
         run: |
-            if [ "${GITHUB_REF##*/}" == "second-branch" ]; then
-              echo "Building Docker image on second-branch"
-              docker build -t monyslim/apper-image:2 .
-              docker push monyslim/apper-image:2
-            elif [ "${GITHUB_REF##*/}" == "master" ]; then
-              echo "Building Docker image on master"
-              docker build -t monyslim/apper-image:1 .
-              docker push monyslim/apper-image:1
-            fi
+          docker push $USERNAME/$IMAGE_NAME:$VERSION
+
+      - name: Stop the container
+        run: docker stop test-calc || true
+
+      - name: Remove the container test-calc
+        run: docker rm test-calc || true
+
+      - name: Get the image from Docker Hub
+        run: docker pull monyslim/apper-image:${{ github.ref_name == 'master' && '1' || '2' }}
+
+      - name: Run the image as a container
+        run: docker run -d -p 3004:3000 --name test-calc monyslim/apper-image:${{ github.ref_name == 'master' && '1' || '2' }}

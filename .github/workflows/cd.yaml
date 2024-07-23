@@ -1,0 +1,19 @@
+name: "Continuous Deploy"
+on: 
+    workflow_run: ##This is the event type that triggers the workflow
+        workflows: ["CI/CD Pipeline"] ## This is the name of the workflow
+        types: ## Indicates that the workflow that builds & should be triggered when it is pushed to Docker Hub
+            - completed ## Specifies workflow is completed
+jobs:
+    pull_and_run_code:
+        if: ${{ github.ref_name == 'second-branch' }}
+        runs-on: self-hosted
+        steps:
+            - name: "stop the container"
+              run: "docker stop test-calc || true"
+            - name: "Remove the container test-calc"
+              run: docker rm test-calc || true
+            - name: "get the code from Docker Hub"
+              run: docker pull monyslim/apper-image:2
+            - name: "run the image as a container"
+              run: docker run -d -p 3004:3000 --name test-calc monyslim/apper-image:2

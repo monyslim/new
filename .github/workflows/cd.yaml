@@ -1,6 +1,9 @@
 name: "Continuous Deploy"
 
-on: 
+on:
+    push:
+        branches:
+            - second-branch
     workflow_run: ##This is the event type that triggers the workflow
         workflows: ["CI/CD Pipeline"] ## This is the name of the workflow
         types: ## Indicates that the workflow that builds & should be triggered when it is pushed to Docker Hub

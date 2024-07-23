@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Print greeting
         run: echo "Building Docker image on master branch!!"
@@ -25,13 +25,14 @@ jobs:
 
       - name: Build Docker image
         env:
-          image_name: apper-image
-          version: 1
-          username: monyslim
+          IMAGE_NAME: apper-image
+          VERSION: 1
+          USERNAME: monyslim
         run: docker build -t $username/$image_name:$version .
       - name: push the image
         env:
-            image_name: apper-image
-            version: 1
-            username: monyslim
-        run: sudo docker push $username/$image_name:$version
+            IMAGE_NAME: apper-image
+            VERSION: 1
+            USERNAME: monyslim
+        run: |
+            docker push $username/$image_name:$version

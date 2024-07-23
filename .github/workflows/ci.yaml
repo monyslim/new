@@ -28,11 +28,11 @@ jobs:
           IMAGE_NAME: apper-image
           VERSION: 1
           USERNAME: monyslim
-        run: docker build -t $username/$image_name:$version .
+        run: docker build -t $USERNAME/$IMAGE_NAME:$VERSION .
       - name: push the image
         env:
             IMAGE_NAME: apper-image
             VERSION: 1
             USERNAME: monyslim
         run: |
-            docker push $username/$image_name:$version
+            docker push $USERNAME/$IMAGE_NAME:$VERSION

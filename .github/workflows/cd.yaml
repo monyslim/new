@@ -9,7 +9,7 @@ on:
 
 jobs:
     pull_and_run_code:
-        if: ${{ github.ref_name == 'second-branch' }}
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
         runs-on: self-hosted
         steps:
             - name: "stop the container"
